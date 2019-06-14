@@ -3,6 +3,9 @@
 2. 使用平衡因子来度量树的平衡性能,这里 树要满足平衡条件,所有的节点左右两个高度差不能大于1
 3. 给所有的节点计算高度,叶子节点的高速为1,非叶子节点的高度是他左右节点(以哪个高度大为准),加1
 4. 需要辅助函数来判断树是否是 1. 满足二分搜索的条件(中序遍历是顺序结构) 2. 是否是平衡二叉树(评断平衡因子)
+
+5. LL RR LR RL
+6. 优化
 """
 
 
@@ -48,7 +51,7 @@ class Tree:
 
         balance_factor = self.balance_factor(node)
         if balance_factor > 1:
-            #平衡被改变了,左边比右边高,右旋转平衡
+            # 平衡被改变了,左边比右边高,右旋转平衡
             if self.balance_factor(node.left) >= 0:
 
                 """
@@ -61,15 +64,14 @@ class Tree:
                     T2  T3       T1  T2
                 """
 
-
-                #这个 LL情况
-                #平衡因子的左边的左边大于0,表示是左边的左边的左边的节点导致了
-                #他不平衡 那么需要右旋转
+                # 这个 LL情况
+                # 平衡因子的左边的左边大于0,表示是左边的左边的左边的节点导致了
+                # 他不平衡 那么需要右旋转
                 node = self._right_rotate(node)
-                #获取到新节点后返回回去,那么他自动会街上
+                # 获取到新节点后返回回去,那么他自动会街上
             else:
-                #这是 LR情况
-                #先对node的左子树左旋转 然后对node有旋转
+                # 这是 LR情况
+                # 先对node的左子树左旋转 然后对node有旋转
                 node.left = self._left_rotate(node.left)
                 node = self._right_rotate(node)
 
@@ -81,13 +83,13 @@ class Tree:
                 """
                 node = self._left_rotate(node)
             else:
-                #这个RL
+                # 这个RL
                 node.right = self._right_rotate(node.right)
                 node = self._left_rotate(node)
 
         return node
 
-    def _right_rotate(self,y):
+    def _right_rotate(self, y):
         """
                      y                  x
                     / \               /  \
@@ -103,12 +105,12 @@ class Tree:
         T3 = x.right
         x.right = y
         y.left = T3
-        #更新节点的height 只需要 x,y的高度，先更新y,然后x变化,再更新x
+        # 更新节点的height 只需要 x,y的高度，先更新y,然后x变化,再更新x
         self.get_height(y)
         self.get_height(x)
         return x
 
-    def _left_rotate(self,y):
+    def _left_rotate(self, y):
         """
         :param node:
         :return:
@@ -117,11 +119,10 @@ class Tree:
         T3 = x.left
         x.left = y
         y.right = T3
-        #更新节点的height 只需要 x,y的高度，先更新y,然后x变化,再更新x
+        # 更新节点的height 只需要 x,y的高度，先更新y,然后x变化,再更新x
         self.get_height(y)
         self.get_height(x)
         return x
-
 
     def check_factor(self):
         # 遍历节点的所有子节点 查看平衡性
@@ -224,17 +225,17 @@ class Tree:
     def find(self, val):
         return self._find(self.root, val)
 
-    def remove(self,val):
-        self.root = self._remove(self.root,val)
+    def remove(self, val):
+        self.root = self._remove(self.root, val)
         return self.root
 
-    def _remove(self,root,val):
+    def _remove(self, root, val):
         if root == None:
             return None
         if root.val > val:
-            root.left= self._remove(root.left,val)
+            root.left = self._remove(root.left, val)
         elif root.val < val:
-            root.right= self._remove(root.right,val)
+            root.right = self._remove(root.right, val)
         else:
             root = None
         return root
