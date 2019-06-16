@@ -72,11 +72,15 @@ class AVL:
 
         if node.data == data:
             return node
-
-        if node.data > data:
-            node.left = self._add(node.left, data)
-        else:
-            node.right = self._add(node.right, data)
+        try:
+            if node.data > data:
+                node.left = self._add(node.left, data)
+            else:
+                node.right = self._add(node.right, data)
+        except Exception:
+            x =node
+            y =1
+            raise Exception
 
         node.height = self.set_height(node)
 
